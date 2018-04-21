@@ -41,8 +41,7 @@ $("#add-gif").on("click", function(event) {
     
     //new sport from user is added to array
     sportsArray.push(sport);
-    console.log(sportsArray);
-    console.log(sport);
+    
     //input box is cleared
     $("#sports-input").val("");
     //buttons are reloaded
@@ -53,7 +52,7 @@ $("#add-gif").on("click", function(event) {
 
 function getSportsGifs() {
     //grab sport name from button click
-    var sportName = "tennis"
+    var sportName = $(this).attr("data-name");
    //set rating limit
     var rating = 'pg';
     //  set number of gifs shown
@@ -70,9 +69,7 @@ function getSportsGifs() {
       method: "GET"
     })
     .then(function (response) {
-        console.log(response);
-        console.log(queryURL);
-        console.log(sportName);
+        
 
         var results = response.data;
         //start with empty div
@@ -99,14 +96,16 @@ function getSportsGifs() {
             //place new div in container div
             $("#sports").append(newDiv);
         }
-
+        //change from still to animated and back
         $(".gif").on("click", function() {
             var state = $(this).attr("data-state");
 
             if (state === "still") {
+                //change state from still to animate
                 $(this).attr("src", $(this).attr("data-animate"));
                 $(this).attr("data-state", "animate");
             } else {
+                //change state from animate to still
                 $(this).attr("src", $(this).attr("data-still"));
                 $(this).attr("data-state", "still");
             }
