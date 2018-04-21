@@ -35,10 +35,10 @@ function renderButtons() {
 //event handler to add another sport button 
 $("#add-gif").on("click", function(event) {
     event.preventDefault();
-
+    
     //grab user input from text box
     var sport = $("#sports-input").val().trim();
-
+    
     //new sport from user is added to array
     sportsArray.push(sport);
     console.log(sportsArray);
@@ -53,14 +53,14 @@ $("#add-gif").on("click", function(event) {
 
 function getSportsGifs() {
     //grab sport name from button click
-    var sportName = $(this).attr("data-name");
+    var sportName = "tennis"
    //set rating limit
     var rating = 'pg';
     //  set number of gifs shown
     var limit = 10;
     //  api Key
     var apiKey = 'dDn9PFRnzfIiJQk7Z88v3edbxIGdJ06J';
-
+    
     //create Giphy URL
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + sportName + "&rating=" +rating + "&limit=" + limit+ "&api_key=" + apiKey;
 
@@ -86,7 +86,7 @@ function getSportsGifs() {
             //add rating for each gif
             newDiv.append(ratingDisp);
 
-            console.log(ratingDisp);
+            
             //create img to hold each gif and add still and animated classes
             var sportsImage = $('<img>');
             sportsImage.attr({'src': results[i].images.fixed_height_still.url});
@@ -100,6 +100,17 @@ function getSportsGifs() {
             $("#sports").append(newDiv);
         }
 
+        $(".gif").on("click", function() {
+            var state = $(this).attr("data-state");
+
+            if (state === "still") {
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+            }
+        })
 
     });
 
