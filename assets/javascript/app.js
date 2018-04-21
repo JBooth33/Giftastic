@@ -5,7 +5,8 @@ $(document).ready(function () {
 
 var sportsArray = ["soccer", "football", "polo", "hockey", "curling", "baseball", "basketball", "golf", "rugby", "boxing", "gymnastics"]
 
-
+renderButtons();
+getSportsGifs();
 
 //function for displaying buttons
 function renderButtons() {
@@ -40,6 +41,8 @@ $("#add-gif").on("click", function(event) {
 
     //new sport from user is added to array
     sportsArray.push(sport);
+    console.log(sportsArray);
+    console.log(sport);
     //input box is cleared
     $("#sports-input").val("");
     //buttons are reloaded
@@ -69,11 +72,38 @@ function getSportsGifs() {
     .then(function (response) {
         console.log(response);
         console.log(queryURL);
+        console.log(sportName);
+
+        var results = response.data;
+        //start with empty div
+        $("#sports").empty();
+        //create div for each of 10 returned gifs
+        for (var i = 0; i < results.length; i++) {
+            var newDiv = $("<div>");
+            newDiv.addClass("sportsGif");
+            //create rating variable
+            var ratingDisp = $("<p id='rating'>").text('Rating: ' + results[i].rating);
+            //add rating for each gif
+            newDiv.append(ratingDisp);
+
+            console.log(ratingDisp);
+            //create img to hold each gif and add still and animated classes
+            var sportsImage = $('<img>');
+            sportsImage.attr({'src': results[i].images.fixed_height_still.url});
+            sportsImage.attr({'data-still': results[i].images.fixed_height_still.url});
+            sportsImage.attr({'data-animate': results[i].images.fixed_height.url});
+            sportsImage.attr({'data-state': "still"});
+            sportsImage.attr("class", "gif");
+            //add images to the new div
+            newDiv.append(sportsImage);
+            //place new div in container div
+            $("#sports").append(newDiv);
+        }
 
 
     });
 
 
 };  
-getSportsGifs();
+
 });
